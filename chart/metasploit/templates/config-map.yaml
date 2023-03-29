@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "metasploit.fullname" . }}
+  labels:
+    {{- include "metasploit.labels" . | nindent 4 }}
+data:
+  database.yml: |-
+    production: &production
+      adapter: postgresql
+      database: {{ .Values.postgresql.global.postgresql.auth.database }}
+      username: {{ .Values.postgresql.global.postgresql.auth.username }}
+      password: {{ .Values.postgresql.global.postgresql.auth.password }}
+      host: {{ .Release.Name}}-postgresql
+      port: {{ .Values.postgresql.global.postgresql.servicePort }}
+      pool: 200
+      timeout: 5
